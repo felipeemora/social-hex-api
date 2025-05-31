@@ -1,0 +1,10 @@
+CREATE EXTENSION IF NOT EXISTS "citext";
+
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    email citext NOT NULL,
+    password BYTEA NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+);
+

@@ -1,0 +1,44 @@
+.
+├── cmd
+│   └── main.go
+├── go.mod
+├── go.sum
+├── internal
+│   ├── application
+│   │   ├── dependencies.go
+│   │   ├── services
+│   │   └── usecases
+│   │       └── create_post_usecase.go
+│   ├── domain
+│   │   ├── models
+│   │   │   └── post_model.go
+│   │   └── ports
+│   │       ├── in
+│   │       │   └── create_post_port.go
+│   │       └── out
+│   │           └── storage_port.go
+│   ├── infraestructure
+│   │   ├── drivenadapters
+│   │   │   ├── configurations
+│   │   │   │   ├── config.go
+│   │   │   │   └── env.go
+│   │   │   ├── dependencies.go
+│   │   │   ├── postgres
+│   │   │   │   └── postgesql_adapter.go
+│   │   │   └── redis
+│   │   └── entrypoints
+│   │       ├── common
+│   │       │   └── helpers.go
+│   │       ├── dependencies.go
+│   │       ├── exceptions
+│   │       │   └── exceptions.go
+│   │       └── posts
+│   │           ├── create_post_handler.go
+│   |           ├── dto
+│   │           │   └── post.go
+│   │           └── mapper
+│   │               └── mapper.go
+│   └── internal.go
+└── tree.txt
+
+22 directories, 20 files
