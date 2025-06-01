@@ -1,6 +1,13 @@
 .
+├── bin
+│   └── main
 ├── cmd
 │   └── main.go
+├── docker-compose.yml
+├── docs
+│   ├── docs.go
+│   ├── swagger.json
+│   └── swagger.yaml
 ├── go.mod
 ├── go.sum
 ├── internal
@@ -16,7 +23,7 @@
 │   │       ├── in
 │   │       │   └── create_post_port.go
 │   │       └── out
-│   │           └── storage_port.go
+│   │           └── storage_post_port.go
 │   ├── infraestructure
 │   │   ├── drivenadapters
 │   │   │   ├── configurations
@@ -24,21 +31,37 @@
 │   │   │   │   └── env.go
 │   │   │   ├── dependencies.go
 │   │   │   ├── postgres
-│   │   │   │   └── postgesql_adapter.go
+│   │   │   │   ├── migrations
+│   │   │   │   │   ├── 000001_create_table_users.down.sql
+│   │   │   │   │   ├── 000001_create_table_users.up.sql
+│   │   │   │   │   ├── 000002_create_table_posts.down.sql
+│   │   │   │   │   ├── 000002_create_table_posts.up.sql
+│   │   │   │   │   ├── 000003_alter_table_posts_table_fk_users_table.down.sql
+│   │   │   │   │   └── 000003_alter_table_posts_table_fk_users_table.up.sql
+│   │   │   │   ├── postgres.go
+│   │   │   │   └── storage_post_adapter.go
 │   │   │   └── redis
 │   │   └── entrypoints
 │   │       ├── common
-│   │       │   └── helpers.go
+│   │       │   ├── dtos.go
+│   │       │   ├── helpers.go
+│   │       │   └── validator.go
 │   │       ├── dependencies.go
 │   │       ├── exceptions
 │   │       │   └── exceptions.go
-│   │       └── posts
-│   │           ├── create_post_handler.go
-│   |           ├── dto
-│   │           │   └── post.go
-│   │           └── mapper
-│   │               └── mapper.go
+│   │       ├── posts
+│   │       │   ├── create_post_handler.go
+│   │       │   ├── dto
+│   │       │   │   └── post.go
+│   │       │   └── mapper
+│   │       │       └── mapper.go
+│   │       └── swagger
+│   │           └── swagger_hander.go
 │   └── internal.go
+├── Makefile
+├── README.md
+├── tmp
+│   └── build-errors.log
 └── tree.txt
 
-22 directories, 20 files
+27 directories, 38 files
