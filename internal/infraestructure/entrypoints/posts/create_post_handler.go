@@ -2,7 +2,6 @@ package createpost
 
 import (
 	"errors"
-	"log"
 	"net/http"
 
 	"github.com/felipeemora/social-hex-api/internal/domain/ports/in"
@@ -10,15 +9,18 @@ import (
 	exceptions "github.com/felipeemora/social-hex-api/internal/infraestructure/entrypoints/exceptions"
 	"github.com/felipeemora/social-hex-api/internal/infraestructure/entrypoints/posts/dto"
 	"github.com/felipeemora/social-hex-api/internal/infraestructure/entrypoints/posts/mapper"
+	"github.com/felipeemora/social-hex-api/internal/infraestructure/support/logger"
 	"github.com/go-chi/chi/v5"
 )
 
 type CreatePostHandler struct {
+	logger            logger.Logger
 	CreatePostUsecase in.CreatePostPort
 }
 
-func NewCreatePostHandler(createPostUsecase in.CreatePostPort) *CreatePostHandler {
+func NewCreatePostHandler(createPostUsecase in.CreatePostPort, logger logger.Logger) *CreatePostHandler {
 	return &CreatePostHandler{
+		logger:            logger,
 		CreatePostUsecase: createPostUsecase,
 	}
 }
@@ -26,13 +28,12 @@ func NewCreatePostHandler(createPostUsecase in.CreatePostPort) *CreatePostHandle
 func (h *CreatePostHandler) Handler(w http.ResponseWriter, r *http.Request) {
 	var payload dto.CreatePostRequestDTO
 	if err := common.ReadJson(w, r, &payload); err != nil {
-		exceptions.BadRequestError(w, r, err, nil)
+		exceptions.BadRequestError(w, r, h.logger, err, nil)
 		return
 	}
 
 	if errs := common.ValidateStruct(&payload); len(errs) > 0 {
-		log.Println(errs)
-		exceptions.BadRequestError(w, r, errors.New("error in fields validation"), errs)
+		exceptions.BadRequestError(w, r, h.logger, errors.New("error in fields validation"), errs)
 		return
 	}
 
@@ -40,14 +41,15 @@ func (h *CreatePostHandler) Handler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	postDomain, err := h.CreatePostUsecase.Execute(ctx, postDomain)
+	h.logger.Infow("Post created successfully", "post", postDomain)
 
 	if err != nil {
-		exceptions.InternalServerError(w, r, err, nil)
+		exceptions.InternalServerError(w, r, h.logger, err, nil)
 		return
 	}
 
 	if err := common.JsonResponse(w, http.StatusCreated, mapper.FromDomain(postDomain)); err != nil {
-		exceptions.InternalServerError(w, r, err, nil)
+		exceptions.InternalServerError(w, r, h.logger, err, nil)
 		return
 	}
 }
