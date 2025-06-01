@@ -15,6 +15,9 @@
 5. docker exec -it d97733d3e4de redis-cli GET "user:61"
 7. Tambié está Redis  Comander en el http://localhost:8081
 
+### Links
+- Swagger: https://localhost:8080/v1/swagger/index.html
+
 - Para medir tiempos de respuesta 
 npx autocannon http://localhost:8080/v1/users/61 --connections 10 --duration 5 -H "Authorization: Bearer {{token}}"
 
