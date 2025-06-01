@@ -9,6 +9,7 @@ import (
 type Configurations struct {
 	ServerPort string
 	DBConfig   dbConfig
+	ApiURL     string
 }
 
 type dbConfig struct {
@@ -32,6 +33,7 @@ func Load() *Configurations {
 			MaxIdleConns: GetInt("DB_MAX_IDLE_CONNS", 10),
 			MaxIdleTime:  GetString("DB_MAX_IDLE_TIME", "5m"),
 		},
+		ApiURL: GetString("API_URL", "localhost:8080"),
 	}
 
 	return configurations
