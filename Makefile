@@ -12,7 +12,7 @@ run: up
 	go run cmd/*.go
 
 ## run-dev: run the application in development mode
-run-dev: up
+run-dev:
 	@echo "Running application in development mode..."
 	air
 

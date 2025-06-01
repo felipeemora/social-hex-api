@@ -6,40 +6,40 @@ import (
 	helpers "github.com/felipeemora/social-hex-api/internal/infraestructure/entrypoints/common"
 )
 
-func InternalServerError(w http.ResponseWriter, r *http.Request, err error) {
+func InternalServerError(w http.ResponseWriter, r *http.Request, err error, metadata map[string]any) {
 	//app.logger.Errorw("internal server error", "method", r.Method, "path", r.URL.Path, "error", err.Error())
-	helpers.WriteJSONError(w, http.StatusInternalServerError, "the server encountered a problem")
+	helpers.WriteJSONError(w, http.StatusInternalServerError, "the server encountered a problem", metadata)
 }
 
-func BadRequestError(w http.ResponseWriter, r *http.Request, err error) {
+func BadRequestError(w http.ResponseWriter, r *http.Request, err error, metadata map[string]any) {
 	//app.logger.Warnf("bad request error", "method", r.Method, "path", r.URL.Path, "error", err.Error())
-	helpers.WriteJSONError(w, http.StatusBadRequest, err.Error())
+	helpers.WriteJSONError(w, http.StatusBadRequest, err.Error(), metadata)
 }
 
-func NotFoundError(w http.ResponseWriter, r *http.Request, err error) {
+func NotFoundError(w http.ResponseWriter, r *http.Request, err error, metadata map[string]any) {
 	//app.logger.Errorw("not found error", "method", r.Method, "path", r.URL.Path, "error", err.Error())
-	helpers.WriteJSONError(w, http.StatusNotFound, "resource not found")
+	helpers.WriteJSONError(w, http.StatusNotFound, "resource not found", metadata)
 }
 
-func ConflictError(w http.ResponseWriter, r *http.Request, err error) {
+func ConflictError(w http.ResponseWriter, r *http.Request, err error, metadata map[string]any) {
 	//app.logger.Warnf("conflict error", "method", r.Method, "path", r.URL.Path, "error", err.Error())
-	helpers.WriteJSONError(w, http.StatusConflict, err.Error())
+	helpers.WriteJSONError(w, http.StatusConflict, err.Error(), metadata)
 }
 
-func UnauthorizedError(w http.ResponseWriter, r *http.Request, err error) {
+func UnauthorizedError(w http.ResponseWriter, r *http.Request, err error, metadata map[string]any) {
 	//app.logger.Warnf("unauthorized error", "method", r.Method, "path", r.URL.Path, "error", err.Error())
-	helpers.WriteJSONError(w, http.StatusUnauthorized, err.Error())
+	helpers.WriteJSONError(w, http.StatusUnauthorized, err.Error(), metadata)
 }
 
-func UnauthorizedBasicError(w http.ResponseWriter, r *http.Request, err error) {
+func UnauthorizedBasicError(w http.ResponseWriter, r *http.Request, err error, metadata map[string]any) {
 	//app.logger.Warnf("unauthorized basic error", "method", r.Method, "path", r.URL.Path, "error", err.Error())
 
 	w.Header().Set("WWW-Authenticate", `Basic realm="Authorization Required"`)
 
-	helpers.WriteJSONError(w, http.StatusUnauthorized, err.Error())
+	helpers.WriteJSONError(w, http.StatusUnauthorized, err.Error(), metadata)
 }
 
-func ForbiddenError(w http.ResponseWriter, r *http.Request, err error) {
+func ForbiddenError(w http.ResponseWriter, r *http.Request, err error, metadata map[string]any) {
 	//app.logger.Warnf("forbidden error", "method", r.Method, "path", r.URL.Path, "error", err.Error())
-	helpers.WriteJSONError(w, http.StatusForbidden, err.Error())
+	helpers.WriteJSONError(w, http.StatusForbidden, err.Error(), metadata)
 }

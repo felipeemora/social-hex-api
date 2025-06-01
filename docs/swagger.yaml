@@ -1,0 +1,104 @@
+definitions:
+  dto.CreatePostRequestDTO:
+    properties:
+      content:
+        example: This is the content of my first post
+        maxLength: 1000
+        minLength: 3
+        type: string
+      tags:
+        example:
+        - first
+        - post
+        items:
+          type: string
+        type: array
+      title:
+        example: My first post
+        maxLength: 100
+        minLength: 3
+        type: string
+      user_id:
+        type: integer
+    required:
+    - content
+    - title
+    type: object
+  dto.PostSuccessAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.PostWithMetadata'
+    type: object
+  dto.PostWithMetadata:
+    properties:
+      content:
+        example: This is the content of my first post
+        maxLength: 1000
+        minLength: 3
+        type: string
+      id:
+        type: integer
+      tags:
+        example:
+        - first
+        - post
+        items:
+          type: string
+        type: array
+      title:
+        example: My first post
+        maxLength: 100
+        minLength: 3
+        type: string
+      user_id:
+        type: integer
+    required:
+    - content
+    - title
+    type: object
+  entrypoints.ErrorAPIResponse:
+    properties:
+      error:
+        type: string
+      metadata:
+        additionalProperties: {}
+        type: object
+    type: object
+info:
+  contact:
+    email: felipemora@mail.com
+    name: Felipe Mora
+  description: This is a server for a social media application.
+  title: Social Hex API
+paths:
+  /posts:
+    post:
+      consumes:
+      - application/json
+      description: create a new post
+      parameters:
+      - description: Post creation payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreatePostRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Post created successfully
+          schema:
+            $ref: '#/definitions/dto.PostSuccessAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entrypoints.ErrorAPIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entrypoints.ErrorAPIResponse'
+      summary: Create Post
+      tags:
+      - posts
+swagger: "2.0"

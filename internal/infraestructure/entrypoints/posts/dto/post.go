@@ -1,13 +1,17 @@
 package dto
 
 type CreatePostRequestDTO struct {
-	Title   string   `json:"title" validator:"required,min=3,max=100"`
-	Content string   `json:"content" validator:"required,min=3,max=1000"`
-	Tags    []string `json:"tags"`
+	Title   string   `json:"title" validate:"required,min=3,max=100" example:"My first post"`
+	Content string   `json:"content" validate:"required,min=3,max=1000" example:"This is the content of my first post"`
+	Tags    []string `json:"tags" example:"first,post"`
 	UserID  int      `json:"user_id"`
 }
 
-type PostResponseDTO struct {
+type PostWithMetadata struct {
 	ID int `json:"id"`
 	*CreatePostRequestDTO
+}
+
+type PostSuccessAPIResponse struct {
+	Data *PostWithMetadata `json:"data"`
 }

@@ -14,14 +14,16 @@ func ToDomain(dto *dto.CreatePostRequestDTO, userID int) *domain.PostModel {
 	}
 }
 
-func FromDomain(postModel *domain.PostModel) *dto.PostResponseDTO {
-	return &dto.PostResponseDTO{
-		ID:      postModel.ID,
-		CreatePostRequestDTO: &dto.CreatePostRequestDTO{
-			Title:   postModel.Title,
-			Content: postModel.Content,
-			Tags:    postModel.Tags,
-			UserID:  postModel.UserID,
+func FromDomain(postModel *domain.PostModel) *dto.PostSuccessAPIResponse {
+	return &dto.PostSuccessAPIResponse{
+		Data: &dto.PostWithMetadata{
+			ID: postModel.ID,
+			CreatePostRequestDTO: &dto.CreatePostRequestDTO{
+				Title:   postModel.Title,
+				Content: postModel.Content,
+				Tags:    postModel.Tags,
+				UserID:  postModel.UserID,
+			},
 		},
 	}
 }

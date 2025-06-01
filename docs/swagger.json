@@ -1,0 +1,152 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a server for a social media application.",
+        "title": "Social Hex API",
+        "contact": {
+            "name": "Felipe Mora",
+            "email": "felipemora@mail.com"
+        }
+    },
+    "paths": {
+        "/posts": {
+            "post": {
+                "description": "create a new post",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Create Post",
+                "parameters": [
+                    {
+                        "description": "Post creation payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreatePostRequestDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Post created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/dto.PostSuccessAPIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/entrypoints.ErrorAPIResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/entrypoints.ErrorAPIResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.CreatePostRequestDTO": {
+            "type": "object",
+            "required": [
+                "content",
+                "title"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string",
+                    "maxLength": 1000,
+                    "minLength": 3,
+                    "example": "This is the content of my first post"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "first",
+                        "post"
+                    ]
+                },
+                "title": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 3,
+                    "example": "My first post"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.PostSuccessAPIResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/dto.PostWithMetadata"
+                }
+            }
+        },
+        "dto.PostWithMetadata": {
+            "type": "object",
+            "required": [
+                "content",
+                "title"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string",
+                    "maxLength": 1000,
+                    "minLength": 3,
+                    "example": "This is the content of my first post"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "first",
+                        "post"
+                    ]
+                },
+                "title": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 3,
+                    "example": "My first post"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "entrypoints.ErrorAPIResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "metadata": {
+                    "type": "object",
+                    "additionalProperties": {}
+                }
+            }
+        }
+    }
+}
