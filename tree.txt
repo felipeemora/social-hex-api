@@ -14,22 +14,36 @@
 │   ├── application
 │   │   ├── dependencies.go
 │   │   ├── services
+│   │   │   ├── mail_service.go
+│   │   │   └── password_hasher_service.go
 │   │   └── usecases
-│   │       └── create_post_usecase.go
+│   │       ├── create_post_usecase.go
+│   │       └── create_user_usecase.go
 │   ├── domain
 │   │   ├── models
-│   │   │   └── post_model.go
+│   │   │   ├── post_model.go
+│   │   │   └── user_model.go
 │   │   └── ports
 │   │       ├── in
-│   │       │   └── create_post_port.go
+│   │       │   ├── create_post_port.go
+│   │       │   └── create_user_port.go
 │   │       └── out
-│   │           └── storage_post_port.go
+│   │           ├── configurations_port.go
+│   │           ├── mail_port.go
+│   │           ├── storage_post_port.go
+│   │           └── storage_user_port.go
 │   ├── infraestructure
 │   │   ├── drivenadapters
 │   │   │   ├── configurations
 │   │   │   │   ├── config.go
+│   │   │   │   ├── configurations_adapter.go
 │   │   │   │   └── env.go
 │   │   │   ├── dependencies.go
+│   │   │   ├── mailtrap
+│   │   │   │   ├── mail_adapter.go
+│   │   │   │   ├── mailtrap.go
+│   │   │   │   └── templates
+│   │   │   │       └── user_invitation.gohtml
 │   │   │   ├── postgres
 │   │   │   │   ├── migrations
 │   │   │   │   │   ├── 000001_create_table_users.down.sql
@@ -37,26 +51,55 @@
 │   │   │   │   │   ├── 000002_create_table_posts.down.sql
 │   │   │   │   │   ├── 000002_create_table_posts.up.sql
 │   │   │   │   │   ├── 000003_alter_table_posts_table_fk_users_table.down.sql
-│   │   │   │   │   └── 000003_alter_table_posts_table_fk_users_table.up.sql
+│   │   │   │   │   ├── 000003_alter_table_posts_table_fk_users_table.up.sql
+│   │   │   │   │   ├── 000004_add_comments_table.down.sql
+│   │   │   │   │   ├── 000004_add_comments_table.up.sql
+│   │   │   │   │   ├── 000005_add_version_post_table.down.sql
+│   │   │   │   │   ├── 000005_add_version_post_table.up.sql
+│   │   │   │   │   ├── 000006_add-followers-users.down.sql
+│   │   │   │   │   ├── 000006_add-followers-users.up.sql
+│   │   │   │   │   ├── 000007_add_indexes.down.sql
+│   │   │   │   │   ├── 000007_add_indexes.up.sql
+│   │   │   │   │   ├── 000008_add_invitation.down.sql
+│   │   │   │   │   ├── 000008_add_invitation.up.sql
+│   │   │   │   │   ├── 000009_add_activated_to_user.down.sql
+│   │   │   │   │   ├── 000009_add_activated_to_user.up.sql
+│   │   │   │   │   ├── 000010_add_expiration_to_invitations.down.sql
+│   │   │   │   │   ├── 000010_add_expiration_to_invitations.up.sql
+│   │   │   │   │   ├── 000011_add_roles_table.down.sql
+│   │   │   │   │   ├── 000011_add_roles_table.up.sql
+│   │   │   │   │   ├── 000012_alter_users_with_roles.down.sql
+│   │   │   │   │   └── 000012_alter_users_with_roles.up.sql
 │   │   │   │   ├── postgres.go
-│   │   │   │   └── storage_post_adapter.go
+│   │   │   │   ├── storage_post_adapter.go
+│   │   │   │   └── storage_user_adapter.go
 │   │   │   └── redis
-│   │   └── entrypoints
-│   │       ├── common
-│   │       │   ├── dtos.go
-│   │       │   ├── helpers.go
-│   │       │   └── validator.go
-│   │       ├── dependencies.go
-│   │       ├── exceptions
-│   │       │   └── exceptions.go
-│   │       ├── posts
-│   │       │   ├── create_post_handler.go
-│   │       │   ├── dto
-│   │       │   │   └── post.go
-│   │       │   └── mapper
-│   │       │       └── mapper.go
-│   │       └── swagger
-│   │           └── swagger_hander.go
+│   │   ├── entrypoints
+│   │   │   ├── common
+│   │   │   │   ├── dtos.go
+│   │   │   │   ├── helpers.go
+│   │   │   │   └── validator.go
+│   │   │   ├── dependencies.go
+│   │   │   ├── exceptions
+│   │   │   │   └── exceptions.go
+│   │   │   ├── posts
+│   │   │   │   ├── create_post_handler.go
+│   │   │   │   ├── dto
+│   │   │   │   │   └── post.go
+│   │   │   │   └── mapper
+│   │   │   │       └── mapper.go
+│   │   │   ├── swagger
+│   │   │   │   └── swagger_hander.go
+│   │   │   └── users
+│   │   │       ├── create_user_hanlder.go
+│   │   │       ├── dto
+│   │   │       │   └── user.go
+│   │   │       └── mapper
+│   │   │           └── mapper.go
+│   │   └── support
+│   │       └── logger
+│   │           ├── logger.go
+│   │           └── zap_logger.go
 │   └── internal.go
 ├── Makefile
 ├── README.md
@@ -64,4 +107,4 @@
 │   └── build-errors.log
 └── tree.txt
 
-27 directories, 38 files
+34 directories, 74 files
