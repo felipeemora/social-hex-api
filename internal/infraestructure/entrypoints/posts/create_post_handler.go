@@ -1,4 +1,4 @@
-package createpost
+package posts
 
 import (
 	"errors"
@@ -41,12 +41,11 @@ func (h *CreatePostHandler) Handler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	postDomain, err := h.CreatePostUsecase.Execute(ctx, postDomain)
-	h.logger.Infow("Post created successfully", "post", postDomain)
-
 	if err != nil {
 		exceptions.InternalServerError(w, r, h.logger, err, nil)
 		return
 	}
+	h.logger.Infow("Post created successfully", "post", postDomain)
 
 	if err := common.JsonResponse(w, http.StatusCreated, mapper.FromDomain(postDomain)); err != nil {
 		exceptions.InternalServerError(w, r, h.logger, err, nil)
@@ -54,7 +53,7 @@ func (h *CreatePostHandler) Handler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// ListAccounts lists all existing accounts
+// Create Post Handler
 //
 //	@Summary		Create Post
 //	@Description	create a new post

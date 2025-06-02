@@ -34,3 +34,19 @@ func New(addr string, maxOpenConns, maxIdleConns int, maxIdleTime string) (*sql.
 
 	return db, nil
 }
+
+func withTransaction(db *sql.DB, ctx context.Context, fn func(*sql.Tx) error) error {
+	tx, err := db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+
+	if err := fn(tx); err != nil {
+		if rbErr := tx.Rollback(); rbErr != nil {
+			return rbErr
+		}
+		return err
+	}
+
+	return tx.Commit()
+}

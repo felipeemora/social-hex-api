@@ -52,7 +52,7 @@ func main() {
 	defer db.Close()
 	app.logger.Info("Connected to the database")
 
-	handlers := internal.BuildDependencies(db, app.logger)
+	handlers := internal.BuildDependencies(db, app.logger, app.cfg.MailConfig)
 
 	mux := app.mount(handlers)
 	err = app.run(mux)

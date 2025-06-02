@@ -8,8 +8,9 @@ import (
 
 type Configurations struct {
 	ServerPort string
-	DBConfig   dbConfig
 	ApiURL     string
+	DBConfig   dbConfig
+	MailConfig *MailConfig
 }
 
 type dbConfig struct {
@@ -17,6 +18,14 @@ type dbConfig struct {
 	MaxOpenConns int
 	MaxIdleConns int
 	MaxIdleTime  string
+}
+
+type MailConfig struct {
+	FromEmail string
+	ApiKey    string
+	Host      string
+	Port      int
+	Username  string
 }
 
 func Load() *Configurations {
@@ -27,13 +36,20 @@ func Load() *Configurations {
 
 	configurations := &Configurations{
 		ServerPort: GetString("SERVER_PORT", ":8080"),
+		ApiURL: GetString("API_URL", "localhost:8080"),
 		DBConfig: dbConfig{
 			Addr:         GetString("DB_ADDR", ""),
 			MaxOpenConns: GetInt("DB_MAX_OPEN_CONNS", 10),
 			MaxIdleConns: GetInt("DB_MAX_IDLE_CONNS", 10),
 			MaxIdleTime:  GetString("DB_MAX_IDLE_TIME", "5m"),
 		},
-		ApiURL: GetString("API_URL", "localhost:8080"),
+		MailConfig: &MailConfig{
+			FromEmail: GetString("MAIL_FROM_EMAIL", ""),
+			ApiKey:    GetString("MAIL_API_KEY", ""),
+			Host:      GetString("MAIL_HOST", ""),
+			Port:      GetInt("MAIL_PORT", 587),
+			Username:  GetString("MAIL_USERNAME", ""),
+		},
 	}
 
 	return configurations
