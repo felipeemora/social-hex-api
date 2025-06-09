@@ -6,13 +6,17 @@ import (
 )
 
 type EntrypointsDependencies struct {
-	CreatePostUsecase in.CreatePostPort
-	CreateUserUsecase in.CreateUserPort
+	CreatePostUsecase   in.CreatePostPort
+	CreateUserUsecase   in.CreateUserPort
+	ActivateUserUsecase in.ActivateUserPort
+	CreateTokenUsecase  in.CreateTokenPort
 }
 
 func NewEntrypointsDependencies(applicationDeps *application.ApplicationDependencies) *EntrypointsDependencies {
 	return &EntrypointsDependencies{
-		CreatePostUsecase: applicationDeps.CreatePostUsecase,
-		CreateUserUsecase: applicationDeps.CreateUserUsecase,
+		CreatePostUsecase:   applicationDeps.CreatePostUsecase,
+		CreateUserUsecase:   applicationDeps.CreateUserUsecase,
+		ActivateUserUsecase: applicationDeps.ActivateUserUsecase,
+		CreateTokenUsecase:  applicationDeps.CreateTokenUsecase,
 	}
 }

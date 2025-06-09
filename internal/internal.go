@@ -8,6 +8,7 @@ import (
 	"github.com/felipeemora/social-hex-api/internal/infraestructure/drivenadapters"
 	"github.com/felipeemora/social-hex-api/internal/infraestructure/drivenadapters/configurations"
 	"github.com/felipeemora/social-hex-api/internal/infraestructure/entrypoints"
+	"github.com/felipeemora/social-hex-api/internal/infraestructure/entrypoints/auth"
 	"github.com/felipeemora/social-hex-api/internal/infraestructure/entrypoints/posts"
 	"github.com/felipeemora/social-hex-api/internal/infraestructure/entrypoints/swagger"
 	"github.com/felipeemora/social-hex-api/internal/infraestructure/entrypoints/users"
@@ -20,10 +21,10 @@ type Handlers interface {
 	RegisterRoutes(router chi.Router)
 }
 
-func BuildDependencies(db *sql.DB, logger logger.Logger, mailConfig *configurations.MailConfig) *[]Handlers {
+func BuildDependencies(db *sql.DB, logger logger.Logger, mailConfig *configurations.MailConfig, JWTConfig *configurations.JWTConfig) *[]Handlers {
 	logger.Info("Building dependencies...")
 	drivenadaptersDeps := drivenadapters.NewDrivenAdaptersDependencies(db, mailConfig)
-	applicationDeps := application.NewApplicationDependencies(drivenadaptersDeps, logger)
+	applicationDeps := application.NewApplicationDependencies(drivenadaptersDeps, logger, JWTConfig)
 	entrypointsDeps := entrypoints.NewEntrypointsDependencies(applicationDeps)
 	logger.Info("Dependencies built successfully")
 
@@ -31,11 +32,15 @@ func BuildDependencies(db *sql.DB, logger logger.Logger, mailConfig *configurati
 	swaggerHander := swagger.NewSwaggerHandler()
 	postHandler := posts.NewCreatePostHandler(entrypointsDeps.CreatePostUsecase, logger)
 	usersHandler := users.NewCreateUserHandler(entrypointsDeps.CreateUserUsecase, logger)
+	activateUserHandler := users.NewActivateUserHandler(entrypointsDeps.ActivateUserUsecase, logger)
+	authHandler := auth.NewCreateTokenHandler(logger, entrypointsDeps.CreateTokenUsecase)
 	logger.Info("Handlers created successfully")
 
 	return &[]Handlers{
 		swaggerHander,
 		postHandler,
 		usersHandler,
+		activateUserHandler,
+		authHandler,
 	}
 }

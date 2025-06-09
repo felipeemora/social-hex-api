@@ -11,6 +11,7 @@ type UserModel struct {
 	RoleId       int64
 	Role         *RoleModel
 	InvitationID string
+	Token        *string
 }
 
 type RoleModel struct {

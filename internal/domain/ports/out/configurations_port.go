@@ -7,4 +7,5 @@ type ConfigurationsPort interface {
 	GetInvitationTemplateFile() string
 	GetEnvironment() string
 	GetInvitationExpiration() time.Duration
+	GetJWTTokenExpiration() time.Duration
 }

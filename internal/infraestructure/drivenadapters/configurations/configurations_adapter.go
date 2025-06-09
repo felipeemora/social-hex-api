@@ -30,3 +30,11 @@ func (cfg *ConfigurationsAdapter) GetInvitationExpiration() time.Duration {
 	}
 	return time.Hour * time.Duration(expiration)
 }
+
+func (cfg *ConfigurationsAdapter) GetJWTTokenExpiration() time.Duration{
+	expiration := GetInt("JWT_TOKEN_EXPIRATION", 0)
+	if expiration <= 0 {
+		return 0
+	}
+	return time.Hour * time.Duration(expiration)
+}

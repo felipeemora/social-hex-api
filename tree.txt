@@ -17,6 +17,7 @@
 │   │   │   ├── mail_service.go
 │   │   │   └── password_hasher_service.go
 │   │   └── usecases
+│   │       ├── activate_user_usecase.go
 │   │       ├── create_post_usecase.go
 │   │       └── create_user_usecase.go
 │   ├── domain
@@ -25,8 +26,11 @@
 │   │   │   └── user_model.go
 │   │   └── ports
 │   │       ├── in
+│   │       │   ├── activate_user_port.go
 │   │       │   ├── create_post_port.go
-│   │       │   └── create_user_port.go
+│   │       │   ├── create_token_port.go
+│   │       │   ├── create_user_port.go
+│   │       │   └── validate_token_port.go
 │   │       └── out
 │   │           ├── configurations_port.go
 │   │           ├── mail_port.go
@@ -91,6 +95,7 @@
 │   │   │   ├── swagger
 │   │   │   │   └── swagger_hander.go
 │   │   │   └── users
+│   │   │       ├── activate_user_handler.go
 │   │   │       ├── create_user_hanlder.go
 │   │   │       ├── dto
 │   │   │       │   └── user.go
@@ -107,4 +112,4 @@
 │   └── build-errors.log
 └── tree.txt
 
-34 directories, 74 files
+34 directories, 79 files

@@ -10,4 +10,6 @@ import (
 type StorageUserPort interface {
 	CreateUserAndInvite(context.Context, *domain.UserModel, string, time.Duration) error
 	Delete(context.Context, int64) error
+	Activate(ctx context.Context, token *string) error
+	GetByEmail(ctx context.Context, email *string) (*domain.UserModel, error)
 }
