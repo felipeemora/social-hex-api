@@ -43,7 +43,7 @@ func (h *CreateTokenHandler) Handler(w http.ResponseWriter, r *http.Request) {
 	err := h.createTokenUsecase.Execute(r.Context(), userDomain)
 	if err != nil {
 		switch {
-		case errors.Is(err, domain.ErrNotFound):
+		case errors.Is(err, domain.ErrNotFound) || errors.Is(err, domain.ErrInvalidCredentials):
 			exceptions.UnauthorizedError(w, r, h.logger, fmt.Errorf("invalid credentials"), nil)
 		default:
 			exceptions.InternalServerError(w, r, h.logger, err, nil)
@@ -65,7 +65,7 @@ func (h *CreateTokenHandler) Handler(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			payload	body		dto.CreateTokenRequest	true	"User token creation payload"
-//	@Success		201		{object}	dto.CreateTokenResponse	"User token created successfully"
+//	@Success		200		{object}	dto.CreateTokenResponse	"User token created successfully"
 //	@Failure		400		{object}	common.ErrorAPIResponse
 //	@Failure		401		{object}	common.ErrorAPIResponse
 //	@Failure		500		{object}	common.ErrorAPIResponse

@@ -1,6 +1,8 @@
 package logger
 
 import (
+	"os"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -11,13 +13,33 @@ type ZapLogger struct {
 
 func NewZapLogger() *ZapLogger {
     // Configuración personalizada
-    config := zap.NewDevelopmentConfig() // Cambia a un formato más legible
-    config.EncoderConfig.TimeKey = "time" // Cambia "ts" a "time"
-    config.EncoderConfig.CallerKey = "" // Cambia "caller" a "source"
-    config.EncoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout("2006-01-02T15:04:05") // Formato sin milisegundos
+    encoderConfig := zapcore.EncoderConfig{
+    TimeKey:        "time",
+    LevelKey:       "level",
+    MessageKey:     "message",
+    CallerKey:      "caller",
+    StacktraceKey:  "stacktrace", // Mantener el stack trace para errores
+    EncodeTime:     zapcore.TimeEncoderOfLayout("2006-01-02T15:04:05"),
+    EncodeLevel:    zapcore.CapitalLevelEncoder,
+    EncodeCaller:   zapcore.ShortCallerEncoder,
+    }
 
-    zapLogger, _ := config.Build()
-    return &ZapLogger{Logger: zapLogger.Sugar()}
+    // Configurar el nivel de log
+    core := zapcore.NewCore(
+    zapcore.NewConsoleEncoder(encoderConfig),
+    zapcore.AddSync(zapcore.Lock(os.Stdout)),
+    zap.LevelEnablerFunc(func(level zapcore.Level) bool {
+        if level == zap.WarnLevel {
+            encoderConfig.StacktraceKey = "" // Eliminar stack trace para Warn
+        } else {
+            encoderConfig.StacktraceKey = "stacktrace" // Mantener stack trace para Error
+        }
+        return true
+    }),
+    )
+
+    logger := zap.New(core).Sugar()
+    return &ZapLogger{Logger: logger}
 }
 
 func (l *ZapLogger) Info(args ...any) {

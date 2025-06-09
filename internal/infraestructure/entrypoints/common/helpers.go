@@ -21,7 +21,7 @@ func ReadJson(w http.ResponseWriter, r *http.Request, data any) error {
 	return decoder.Decode(data)
 }
 
-func WriteJSONError(w http.ResponseWriter, status int, message string, metadata map[string]any ) error {
+func WriteJSONError(w http.ResponseWriter, status int, message string, metadata map[string]any) error {
 	w.Header().Set("Content-Type", "application/json")
 
 	data := ErrorAPIResponse{

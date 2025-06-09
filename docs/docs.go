@@ -43,7 +43,7 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "User token created successfully",
                         "schema": {
                             "$ref": "#/definitions/dto.CreateTokenResponse"

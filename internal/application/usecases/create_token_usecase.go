@@ -34,16 +34,13 @@ func NewCreateTokenUsecase(logger logger.Logger, storagePort out.StorageUserPort
 }
 
 func (uc *CreateTokenUsecase) Execute(ctx context.Context, user *domainModels.UserModel) error {
-	var err error
-	originalPassword := user.Password
-
-	user, err = uc.storagePort.GetByEmail(ctx, &user.Email)
+	userDB, err := uc.storagePort.GetByEmail(ctx, &user.Email)
 	if err != nil {
 		return err
 	}
 
 	uc.logger.Info("Validating user credentials")
-	if ok := services.Compare(user.PasswordHash, originalPassword); !ok {
+	if ok := services.Compare(userDB.PasswordHash, user.Password); !ok {
 		return domain.ErrInvalidCredentials
 	}
 
@@ -56,14 +53,13 @@ func (uc *CreateTokenUsecase) Execute(ctx context.Context, user *domainModels.Us
 		"nbf": time.Now().Unix(),
 	}
 
-	uc.logger.Info("Generating token")
 	token, err := uc.tokenService.GenerateToken(claims)
 	if err != nil {
 		return err
 	}
 
 	user.Token = &token
-	uc.logger.Infow("Token generated successfully", "userID", user.ID)
+	uc.logger.Infow("Token generated successfully", "email", user.Email)
 
 	return nil
 }
